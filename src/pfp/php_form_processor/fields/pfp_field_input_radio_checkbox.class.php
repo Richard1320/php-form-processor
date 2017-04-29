@@ -1,4 +1,6 @@
 <?php
+namespace pfp\php_form_processor;
+
 class pfp_field_input_radio_checkbox extends pfp_field_options_list {
 
   function field_html() {

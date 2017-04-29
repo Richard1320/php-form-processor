@@ -1,4 +1,6 @@
 <?php
+namespace pfp\php_form_processor;
+
 class pfp_field_options_list extends pfp_field_base {
 
   public $deep;

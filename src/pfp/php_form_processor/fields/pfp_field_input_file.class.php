@@ -1,4 +1,6 @@
 <?php
+namespace pfp\php_form_processor;
+
 class pfp_field_input_file extends pfp_field_base {
 
   protected $maxsize; // max filesize in bytes

@@ -1,4 +1,7 @@
 <?php
+
+namespace pfp\php_form_processor;
+
 class pfp_field_textarea extends pfp_field_base {
 
   function field_html() {

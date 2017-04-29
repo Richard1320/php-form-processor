@@ -1,4 +1,5 @@
 <?php
+namespace pfp\php_form_processor;
 
 class php_form_processor {
 

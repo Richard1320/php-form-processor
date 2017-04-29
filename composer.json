@@ -1,0 +1,21 @@
+{
+  "name": "pfp/php_form_processor",
+  "type": "library",
+  "description": "Create webforms on your website in minutes. It has various built-in validation checks and is extendable to allow you to add more features.",
+  "keywords": ["php","form","form validation"],
+  "homepage": "https://github.com/Richard1320/php-form-processor",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Richard Hung",
+      "email": "richardhung111@gmail.com",
+      "homepage": "http://magicmediamuse.com",
+      "role": "Developer"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "pfp/php_form_processor": "src"
+    }
+  }
+}
