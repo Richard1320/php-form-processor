@@ -1,0 +1,4 @@
+# Ignore Rules
+
+vendor/*
+node_modules/*
