@@ -9,9 +9,9 @@ class php_form_processor {
   protected $config;
 
   function __construct($params) {
-    $this->load_config();
     $this->create_field_objects($params['fields']);
 
+    $this->config  = (isset($params['config'])) ? $params['config'] : array();
     $this->captcha = (isset($params['captcha'])) ? $params['captcha'] : false;
     $this->errors  = (isset($_SESSION['form_post']['errors'])) ? $_SESSION['form_post']['errors'] : array();
   }// End construct
@@ -98,21 +98,6 @@ class php_form_processor {
 
     include dirname(__FILE__).'/tpl/form/_wrapper-close.tpl.php';
   } // end render form
-
-  function load_config() {
-    $config = array();
-
-    // Load default configurations
-    include dirname(__FILE__).'/../config/config.default.php';
-
-    // Load overwritten configurations
-    if (file_exists(dirname(__FILE__).'/../config/config.php')) {
-      include dirname(__FILE__).'/../config/config.php';
-    }
-
-    $this->config = $config;
-
-  }
 
   function get_field_value($key) {
     return $this->fields->$key->value;
