@@ -1,5 +1,5 @@
 <?php
-class pfp_field_input_file_image extends pfp_field_base {
+class pfp_field_input_file_image extends pfp_field_input_file {
 
 
   function __construct($key,$args) {
