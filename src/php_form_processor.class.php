@@ -21,33 +21,37 @@ class php_form_processor {
     $this->fields = new stdClass();
 
     spl_autoload_register(array('php_form_processor', 'autoload'));
-    
-    foreach($array as $key => $field_params) {
-      $type = (isset($field_params['type'])) ? $field_params['type'] : 'text';
 
-      switch ($type) {
-        case 'select':
-          $this->fields->$key = new pfp_field_select($key,$field_params);
-          break;
-        case 'textarea':
-          $this->fields->$key = new pfp_field_textarea($key,$field_params);
-          break;
-        case 'radio':
-        case 'checkbox':
-          $this->fields->$key = new pfp_field_input_radio_checkbox($key,$field_params);
-          break;
-        case 'file':
-          $this->fields->$key = new pfp_field_input_file($key,$field_params);
-          break;
-        case 'image':
-          $this->fields->$key = new pfp_field_input_file_image($key,$field_params);
-          break;
-        case 'text':
-        case 'password':
-        default:
-          $this->fields->$key = new pfp_field_input_text($key,$field_params);
-          break;
-      } // end switch type
+    foreach($array as $key => $field_params) {
+      $type      = (isset($field_params['type'])) ? $field_params['type'] : 'text';
+      $pfp_class = (isset($field_params['pfp_class'])) ? (string)$field_params['pfp_class'] : false;
+
+      if (empty($pfp_class)) {
+        // Use default classes
+
+        switch ($type) {
+          case 'select':
+            $this->fields->$key = new pfp_field_select($key,$field_params);
+            break;
+          case 'textarea':
+            $this->fields->$key = new pfp_field_textarea($key,$field_params);
+            break;
+          case 'radio':
+          case 'checkbox':
+            $this->fields->$key = new pfp_field_input_radio_checkbox($key,$field_params);
+            break;
+          case 'file':
+            $this->fields->$key = new pfp_field_input_file($key,$field_params);
+            break;
+          case 'text':
+          case 'password':
+          default:
+            $this->fields->$key = new pfp_field_input_text($key,$field_params);
+            break;
+        } // end switch type
+      } else {
+        $this->fields->$key = new $pfp_class($key,$field_params);
+      }
 
     } // end field array loop
     return $this->fields;

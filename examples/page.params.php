@@ -37,14 +37,15 @@ $fields['template'] = array(
 		'grid'       => 'Content Within Grid',
 		'full_width' => 'Full Width Content',
 		'l_sidebar'  => 'Content With Left Sidebar',
-		'r_sidebar'  => 'Content With Right Sidebar'
+		'r_sidebar'  => 'Content With Right Sidebar',
 	),
 );
 
 $fields['image'] = array(
-	'label' => 'Image',
-	'type'  => 'file',
-	'name'  => 'image',
+	'label'     => 'Image',
+	'type'      => 'file',
+	'name'      => 'image',
+	'pfp_class' => 'pfp_field_input_file_image',
 );
 
 $fields['pdf'] = array(
@@ -63,7 +64,7 @@ $fields['tags'] = array(
 		'1'=>'Reading',
 		'2'=>'Writing',
 		'3'=>'Grammar',
-		'4'=>'Spelling'
+		'4'=>'Spelling',
 	),
 );
 
@@ -74,6 +75,6 @@ $fields['comment'] = array(
 	'default_value' => $comment,
 	'deep'          => array(
 		'1'=>'Yes',
-		'0'=>'No'
+		'0'=>'No',
 	),
 );
