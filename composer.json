@@ -15,7 +15,7 @@
   ],
   "autoload": {
     "psr-0": {
-      "pfp/php_form_processor": "src"
+      "pfp\\php_form_processor": "src"
     }
   }
 }
