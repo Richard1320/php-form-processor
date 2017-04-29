@@ -15,13 +15,13 @@ class php_form_processor {
     $this->errors  = (isset($_SESSION['form_post']['errors'])) ? $_SESSION['form_post']['errors'] : array();
   }// End construct
   function autoload($className) {
-    include_once dirname(__FILE__).'/fields/'. $className .'.class.php';
+    require_once dirname(__FILE__).'/fields/'. $className .'.class.php';
   }
   function create_field_objects($array) {
     $this->fields = new stdClass();
 
     spl_autoload_register(array('php_form_processor', 'autoload'));
-
+    
     foreach($array as $key => $field_params) {
       $type = (isset($field_params['type'])) ? $field_params['type'] : 'text';
 
