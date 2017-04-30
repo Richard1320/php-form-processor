@@ -8,4 +8,3 @@ if (isset($action_html['prefix'])) echo $action_html['prefix'];
 <?php
 if (isset($action_html['suffix'])) echo $action_html['suffix'];
 ?>
-</form>
