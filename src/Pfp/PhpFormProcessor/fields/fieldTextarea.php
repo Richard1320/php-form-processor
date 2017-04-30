@@ -1,8 +1,10 @@
 <?php
 
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_textarea extends pfp_field_base {
+use Pfp\PhpFormProcessor\fields\fieldBase;
+
+class fieldTextarea extends fieldBase {
 
   function field_html() {
     $output = '';

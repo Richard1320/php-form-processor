@@ -1,7 +1,9 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_input_file_image extends pfp_field_input_file {
+use Pfp\PhpFormProcessor\fields\fieldInputFile;
+
+class fieldInputFileImage extends fieldInputFile {
 
 
   function __construct($key,$args) {

@@ -1,5 +1,11 @@
 <?php
-namespace Pfp\\PhpFormProcessor;
+namespace Pfp\PhpFormProcessor;
+
+use Pfp\PhpFormProcessor\fields\fieldSelect;
+use Pfp\PhpFormProcessor\fields\fieldTextarea;
+use Pfp\PhpFormProcessor\fields\fieldInputRadioCheckbox;
+use Pfp\PhpFormProcessor\fields\fieldInputFile;
+use Pfp\PhpFormProcessor\fields\fieldInputText;
 
 class form {
 
@@ -15,13 +21,8 @@ class form {
     $this->captcha = (isset($params['captcha'])) ? $params['captcha'] : false;
     $this->errors  = (isset($_SESSION['form_post']['errors'])) ? $_SESSION['form_post']['errors'] : array();
   }// End construct
-  function autoload($className) {
-    require_once dirname(__FILE__).'/fields/'. $className .'.class.php';
-  }
   function create_field_objects($array) {
-    $this->fields = new stdClass();
-
-    spl_autoload_register(array('php_form_processor', 'autoload'));
+    $this->fields = new \stdClass();
 
     foreach($array as $key => $field_params) {
       $type      = (isset($field_params['type'])) ? $field_params['type'] : 'text';
@@ -32,22 +33,22 @@ class form {
 
         switch ($type) {
           case 'select':
-            $this->fields->$key = new pfp_field_select($key,$field_params);
+            $this->fields->$key = new fieldSelect($key,$field_params);
             break;
           case 'textarea':
-            $this->fields->$key = new pfp_field_textarea($key,$field_params);
+            $this->fields->$key = new fieldTextarea($key,$field_params);
             break;
           case 'radio':
           case 'checkbox':
-            $this->fields->$key = new pfp_field_input_radio_checkbox($key,$field_params);
+            $this->fields->$key = new fieldInputRadioCheckbox($key,$field_params);
             break;
           case 'file':
-            $this->fields->$key = new pfp_field_input_file($key,$field_params);
+            $this->fields->$key = new fieldInputFile($key,$field_params);
             break;
           case 'text':
           case 'password':
           default:
-            $this->fields->$key = new pfp_field_input_text($key,$field_params);
+            $this->fields->$key = new fieldInputText($key,$field_params);
             break;
         } // end switch type
       } else {

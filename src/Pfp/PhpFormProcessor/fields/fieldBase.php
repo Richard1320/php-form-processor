@@ -1,7 +1,7 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_base {
+class fieldBase {
 
   public $key; // id of field
   public $name; // name attribute of field

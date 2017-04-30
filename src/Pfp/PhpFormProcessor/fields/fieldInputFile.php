@@ -1,7 +1,9 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_input_file extends pfp_field_base {
+use Pfp\PhpFormProcessor\fields\fieldBase;
+
+class fieldInputFile extends fieldBase {
 
   protected $maxsize; // max filesize in bytes
   public    $allowed_extensions; // array of allowed extensions

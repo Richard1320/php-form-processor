@@ -1,7 +1,9 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_options_list extends pfp_field_base {
+use Pfp\PhpFormProcessor\fields\fieldBase;
+
+class fieldOptionsList extends fieldBase {
 
   public $deep;
 

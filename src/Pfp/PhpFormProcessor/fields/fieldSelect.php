@@ -1,7 +1,9 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\PhpFormProcessor\fields;
 
-class pfp_field_select extends pfp_field_options_list {
+use Pfp\PhpFormProcessor\fields\fieldOptionsList;
+
+class fieldSelect extends fieldOptionsList {
 
   function field_html() {
     $output = '';
