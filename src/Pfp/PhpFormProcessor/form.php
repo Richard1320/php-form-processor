@@ -200,19 +200,7 @@ class form {
     }
     $this->errors = (isset($_SESSION['form_post']['errors'])) ? (array)$_SESSION['form_post']['errors'] : array();
 
-    if (!empty($this->errors)) {
-      ?>
-      <div class="error-wrapper">
-      <?php
-      foreach($this->errors as $value) {
-        ?>
-        <p class="error">Error: <?php echo $value; ?><p>
-        <?php
-      } // end error loop
-      ?>
-      </div><!-- // error wrapper -->
-      <?php
-    } // end error check
+    include dirname(__FILE__).'/tpl/form/errors.tpl.php';
   } // end print errors
 
 
