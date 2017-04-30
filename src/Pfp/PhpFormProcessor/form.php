@@ -1,7 +1,7 @@
 <?php
-namespace pfp\php_form_processor;
+namespace Pfp\\PhpFormProcessor;
 
-class php_form_processor {
+class form {
 
   public    $errors;
   protected $fields;
