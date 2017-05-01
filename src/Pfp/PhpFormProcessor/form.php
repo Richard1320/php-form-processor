@@ -63,7 +63,7 @@ class form {
     $method        = (isset($params['method'])) ? $params['method'] : 'post';
     $submit_name   = (isset($params['submit_name'])) ? $params['submit_name'] : 'submit';
     $submit_value  = (isset($params['submit_value'])) ? $params['submit_value'] : 'Submit';
-    $action_html   = (isset($params['classes'])) ? (array)$params['classes'] : array();
+    $action_html   = (isset($params['action_html'])) ? (array)$params['action_html'] : array();
     $classes       = (isset($params['classes'])) ? (array)$params['classes'] : array();
     $enctype       = (isset($params['enctype'])) ? $params['enctype'] : false;
 
