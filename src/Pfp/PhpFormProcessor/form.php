@@ -101,7 +101,21 @@ class form {
   } // end render form
 
   function get_field_value($key) {
-    return $this->fields->$key->value;
+    $value = '';
+
+    if (!empty($this->fields->$key->value)) {
+      $value = $this->fields->$key->value;
+    } else {
+      // Retrieve form errors from session
+      if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+      }
+      if (isset($_SESSION['form_post'][$key])) {
+        $value = $_SESSION['form_post'][$key];
+      }
+    }
+
+    return $value;
   } // end get field data
 
   function submit_form_data($data=false) {
