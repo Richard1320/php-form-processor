@@ -30,24 +30,24 @@ After installing it through Composer, you will have to create your field paramet
 $fields = array();
 
 $fields['name'] = array(
-	'label'         => 'Name',
-	'type'          => 'text',
-	'required'      => true,
-	'name'          => 'name',
+	'label'    => 'Name',
+	'type'     => 'text',
+	'required' => true,
+	'name'     => 'name',
 );
 
 $fields['email'] = array(
-	'label'         => 'Email',
-	'type'          => 'email',
-	'required'      => true,
-	'name'          => 'email',
+	'label'    => 'Email',
+	'type'     => 'email',
+	'required' => true,
+	'name'     => 'email',
 );
 
 $fields['body'] = array(
-	'label'         => 'Message',
-	'type'          => 'textarea',
-	'required'      => true,
-	'name'          => 'body',
+	'label'    => 'Message',
+	'type'     => 'textarea',
+	'required' => true,
+	'name'     => 'body',
 );
 
 $form_params = array(
