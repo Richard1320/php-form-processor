@@ -111,6 +111,8 @@ class form {
         $data = $_POST;
       } else if (!empty($_GET)) {
         $data = $_GET;
+      } else if (!empty($_REQUEST)) {
+        $data = $_REQUEST;
       } else {
         $data = array();
       }
