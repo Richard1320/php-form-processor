@@ -34,7 +34,6 @@ $fields['name'] = array(
 	'type'          => 'text',
 	'required'      => true,
 	'name'          => 'name',
-	'default_value' => $name
 );
 
 $fields['email'] = array(
@@ -42,7 +41,6 @@ $fields['email'] = array(
 	'type'          => 'email',
 	'required'      => true,
 	'name'          => 'email',
-	'default_value' => $email
 );
 
 $fields['body'] = array(
@@ -50,7 +48,6 @@ $fields['body'] = array(
 	'type'          => 'textarea',
 	'required'      => true,
 	'name'          => 'body',
-	'default_value' => $body
 );
 
 $form_params = array(
