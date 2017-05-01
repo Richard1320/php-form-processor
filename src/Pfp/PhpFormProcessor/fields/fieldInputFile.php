@@ -13,7 +13,7 @@ class fieldInputFile extends fieldBase {
     // call parent constructor
     parent::__construct($key,$args);
 
-    $this->maxsize            = (isset($args['maxsize'])) ? (int)$args['maxsize'] : 1048600;
+    $this->maxsize            = (isset($args['maxsize'])) ? (int)$args['maxsize'] : 8388608;
     $this->allowed_extensions = (isset($args['allowed_extensions'])) ? (array)$args['allowed_extensions'] : false;
 
   } // End construct
