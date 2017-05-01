@@ -103,14 +103,14 @@ class form {
   function get_field_value($key) {
     $value = '';
 
-    if (!empty($this->fields->$key->value)) {
+    if (isset($this->fields->$key->value) && !empty($this->fields->$key->value)) {
       $value = $this->fields->$key->value;
     } else {
       // Retrieve form errors from session
       if (session_status() == PHP_SESSION_NONE) {
         session_start();
       }
-      if (isset($_SESSION['form_post'][$key])) {
+      if (isset($_SESSION['form_post'][$key]) && !empty(isset($_SESSION['form_post'][$key]))) {
         $value = $_SESSION['form_post'][$key];
       }
     }
