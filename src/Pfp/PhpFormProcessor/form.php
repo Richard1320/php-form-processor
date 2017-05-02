@@ -172,20 +172,14 @@ class form {
     } // end form data submit field loop
 
     if ($this->captcha) {
-      $captcha_code = '';
-      if (isset($_POST['g-recaptcha-response'])) {
-        $captcha_code = trim($_POST['g-recaptcha-response']);
-      } else if (isset($_GET['g-recaptcha-response'])) {
-        $captcha_code = trim($_GET['g-recaptcha-response']);
-      } // end get captcha
-
+      $captcha_code = (isset($data['g-recaptcha-response'])) ? $data['g-recaptcha-response'] : '';
       $ip           = $_SERVER['REMOTE_ADDR'];
-      $secret_key    = $this->config['recaptcha_secret_key'];
+      $secret_key   = $this->config['recaptcha_secret_key'];
       $response     = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.$captcha_code.'&remoteip='.$ip);
       $responseKeys = json_decode($response,true);
 
       if (empty($secret_key)) {
-        // Make sure key is available as a config (Default declared location: /config/config.php)
+        // Make sure key is available as a config
         $this->errors[] = 'Captcha secret key is invalid. Please contact system administrator.';
       }
       if(intval($responseKeys['success']) !== 1) {
