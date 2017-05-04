@@ -49,7 +49,11 @@ class fieldInputFileImage extends fieldInputFile {
 
     // check if string is longer than allowed length
     if (!$this->image_check($temp_file)) {
-      $this->errors[] = $this->label .' is not a valid image.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_image_check',
+        'message' => $this->label .' is not a valid image.',
+      );
     }
 
     // Return errors

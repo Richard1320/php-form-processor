@@ -180,10 +180,18 @@ class form {
 
       if (empty($secret_key)) {
         // Make sure key is available as a config
-        $this->errors[] = 'Captcha secret key is invalid. Please contact system administrator.';
+        $this->errors[] = array(
+          'key'     => 'recaptcha_secret_key',
+          'status'  => 'error_empty_secret_key',
+          'message' => 'Captcha secret key is invalid. Please contact system administrator.',
+        );
       }
       if(intval($responseKeys['success']) !== 1) {
-        $this->errors[] = 'Captcha is incorrect. Please contact Google.';
+        $this->errors[] = array(
+          'key'     => 'g-recaptcha-response',
+          'status'  => 'error_invalid_captcha_response',
+          'message' => 'Captcha is incorrect. Please contact Google.',
+        );
       } // end captcha error
 
     } // end captcha check

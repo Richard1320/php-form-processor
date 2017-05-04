@@ -35,11 +35,19 @@ class fieldInputText extends fieldBase {
 
     // check if string is longer than allowed length
     if ($this->maxlength && strlen($this->value) > $this->maxlength) {
-      $this->errors[] = 'Maximum '. $this->maxlength .' characters in '. $label .'.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_string_maxlength',
+        'message' => 'Maximum '. $this->maxlength .' characters in '. $this->label .'.',
+      );
     }
 
     if ($this->type == 'email' && !filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
-      $this->errors[] = $label .' field contains an invalid email address.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_email_format',
+        'message' => $this->label .' field contains an invalid email address.',
+      );
     }
 
     // Return errors

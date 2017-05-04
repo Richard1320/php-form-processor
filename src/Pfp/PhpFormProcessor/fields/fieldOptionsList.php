@@ -57,7 +57,11 @@ class fieldOptionsList extends fieldBase {
     // Check if option is in allowed list
     $is_allowed_value = $this->is_allowed_value($this->value);
     if (!$is_allowed_value['status']) {
-      $this->errors[] = $is_allowed_value['invalid_value'] .' is not in the list of availble options for '. $this->label;
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_option_allowed_value',
+        'message' => $is_allowed_value['invalid_value'] .' is not in the list of availble options for '. $this->label,
+      );
     }
 
     // Return errors

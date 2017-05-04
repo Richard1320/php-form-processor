@@ -42,7 +42,11 @@ class fieldInputFile extends fieldBase {
 
     // empty file
     if (!file_exists($temp_file)) {
-      $this->errors[] = $this->label .' file is missing. Please contact system administrator.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_file_exists',
+        'message' => $this->label .' file is missing. Please contact system administrator.',
+      );
 
       // Don't run any more checks on file that does not exist
       return false;
@@ -50,12 +54,20 @@ class fieldInputFile extends fieldBase {
 
     // Check if file extension is valid
     if($this->allowed_extensions && !in_array($extension,$this->allowed_extensions) ) {
-      $this->errors[] = 'Only '. implode(', ',$this->allowed_extensions) .' allowed in '. $this->label .' field.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_allowed_extensions',
+        'message' => 'Only '. implode(', ',$this->allowed_extensions) .' allowed in '. $this->label .' field.',
+      );
     }
 
     // Check if a max size is set
     if ($size > $this->maxsize) {
-      $this->errors[] = 'Max file size is '. $this->maxsize / 1048600 .' MB.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_file_maxsize',
+        'message' => 'Max file size is '. $this->maxsize / 1048600 .' MB.',
+      );
     }
 
     // Return errors

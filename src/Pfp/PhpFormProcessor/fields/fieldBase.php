@@ -105,7 +105,12 @@ class fieldBase {
     if (!$this->is_filled_in($this->value)) {
       // register error if field is required
       if ($this->required) {
-        $this->errors[] = $this->label .' field is required.';
+        $this->errors[] = array(
+          'key'     => $this->key,
+          'status'  => 'error_is_filled_in',
+          'message' => $this->label .' field is required.',
+        );
+
       }
 
       // Stop further checks on field if empty
@@ -114,12 +119,11 @@ class fieldBase {
 
     // checks if value is string or array
     if (!$this->is_valid_type($this->value) && $this->required) {
-      $this->errors[] = $this->label .' field data contains an invalid type.';
-    }
-
-    // checks if value is empty
-    if (!$this->is_filled_in($this->value) && $this->required) {
-      $this->errors[] = $this->label .' field is required.';
+      $this->errors[] = array(
+        'key'     => $this->key,
+        'status'  => 'error_is_valid_type',
+        'message' => $this->label .' field data contains an invalid type.',
+      );
     }
 
     // Return errors
