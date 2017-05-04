@@ -118,7 +118,7 @@ class fieldBase {
     }
 
     // checks if value is string or array
-    if (!$this->is_valid_type($this->value) && $this->required) {
+    if (!$this->is_valid_type($this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_is_valid_type',
