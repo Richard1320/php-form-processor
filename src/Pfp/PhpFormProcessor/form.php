@@ -107,7 +107,7 @@ class form {
       $value = $this->fields->$key->value;
     } else {
       // Retrieve form errors from session
-      if (session_status() == PHP_SESSION_NONE) {
+      if (session_status() == PHP_SESSION_NONE && !headers_sent()) {
         session_start();
       }
       if (isset($_SESSION['form_post'][$key]) && !empty(isset($_SESSION['form_post'][$key]))) {
@@ -154,10 +154,10 @@ class form {
             (array) $_FILES[$field->name]['size']
           );
         } else {
-          $field_data = (isset($_FILES[$field->name])) ? $_FILES[$field->name] : false;
+          $field_data = (isset($_FILES[$field->name])) ? $_FILES[$field->name] : '';
         }
       } else {
-        $field_data = (isset($data[$field->name])) ? $data[$field->name] : false;
+        $field_data = (isset($data[$field->name])) ? $data[$field->name] : '';
       }
 
       // Save submitted field data
@@ -197,23 +197,25 @@ class form {
     } // end captcha check
 
     // Save result in session
-    if (session_status() == PHP_SESSION_NONE) {
+    if (session_status() == PHP_SESSION_NONE && !headers_sent()) {
       session_start();
     }
-    if (empty($this->errors)) {
-      // Form success. Delete session to prevent confusion
-      unset($_SESSION['form_post']);
-    } else {
-      // Save form errors in session
-      $_SESSION['form_post'] = $data;
-      $_SESSION['form_post']['errors'] = $this->errors;
+    if (isset($_SESSION)) {
+      if (empty($this->errors)) {
+        // Form success. Delete session to prevent confusion
+        unset($_SESSION['form_post']);
+      } else {
+        // Save form errors in session
+        $_SESSION['form_post'] = $data;
+        $_SESSION['form_post']['errors'] = $this->errors;
+      }
     }
 
   } // end submit form
 
   function print_errors() {
     // Retrieve form errors from session
-    if (session_status() == PHP_SESSION_NONE) {
+    if (session_status() == PHP_SESSION_NONE && !headers_sent()) {
       session_start();
     }
     $this->errors = (isset($_SESSION['form_post']['errors'])) ? (array)$_SESSION['form_post']['errors'] : array();
