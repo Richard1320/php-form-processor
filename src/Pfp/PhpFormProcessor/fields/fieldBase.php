@@ -82,12 +82,17 @@ class fieldBase {
   } // end is not empty check
 
   // checks if value is string or array
-  function is_valid_type($data) {
+  function is_valid_amount($data) {
     // Default check to true to return false for errors
     $check = true;
 
-    // check if data is not array or string
-    if (!is_array($data) && !is_string($data)) {
+    // check if non-multiple check is a string
+    if (!$this->multiple && !is_string($data) && $this->type != 'checkbox') {
+      $check = false;
+    }
+
+    // check if multiple is an array or string
+    if ($this->multiple && !is_array($data) && !is_string($data)) {
       $check = false;
     }
 
@@ -117,8 +122,8 @@ class fieldBase {
       return false;
     }
 
-    // checks if value is string or array
-    if (!$this->is_valid_type($this->value)) {
+    // checks if value is string or array for single / multiple allowed values
+    if (!$this->is_valid_amount($this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_is_valid_type',
