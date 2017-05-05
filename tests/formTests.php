@@ -162,6 +162,19 @@ class formTests extends TestCase
     $this->assertEquals(count($form->errors), 1);
     $this->assertEquals($form->errors[0]['status'], 'error_is_filled_in');
 
+    // Test missing file
+    unset($_FILES['pdf']);
+    $_FILES['pdf']['name']     = 'hello_world.pdf';
+    $_FILES['pdf']['type']     = 'application/pdf';
+    $_FILES['pdf']['tmp_name'] = dirname(__FILE__).'/files/hello_world.pdf';
+    $_FILES['pdf']['error']    = 0;
+    $_FILES['pdf']['size']     = 45395;
+
+    $form->submit_form_data();
+    // fwrite(STDERR, print_r($form->errors, TRUE));
+    $this->assertEquals(1, count($form->errors));
+    $this->assertEquals($form->errors[0]['status'], 'error_file_exists');
+
     // Test docx with docx extension
     unset($_FILES['pdf']);
     $_FILES['pdf']['name']     = 'docx_with_docx_extension.docx';
