@@ -123,10 +123,10 @@ class fieldBase {
     }
 
     // checks if value is string or array for single / multiple allowed values
-    if (!$this->is_valid_amount($this->value)) {
+    if ($this->type != 'file' && !$this->is_valid_amount($this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
-        'status'  => 'error_is_valid_type',
+        'status'  => 'error_is_valid_amount',
         'message' => $this->label .' field data contains an invalid type.',
       );
     }
