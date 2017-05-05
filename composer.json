@@ -1,5 +1,5 @@
 {
-  "name": "pfp/php_form_processor",
+  "name": "pfp/php-form-processor",
   "type": "library",
   "description": "Create webforms on your website in minutes. It has various built-in validation checks and is extendable to allow you to add more features.",
   "keywords": ["php","form","form validation"],
