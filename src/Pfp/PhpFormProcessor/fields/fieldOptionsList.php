@@ -16,35 +16,8 @@ class fieldOptionsList extends fieldBase {
   } // End construct
 
   function is_allowed_value($data) {
-    // Default check to true to return false for errors
-    $check = array('status'=>true);
-
-    // Check if the parameter is an array
-    if(is_array($data)) {
-      // Loop through the initial dimension
-      foreach($data as $value) {
-        // Let the function call itself over that particular node
-        $check = $this->is_allowed_value($value);
-
-        // If any item in the loop returns false, break to return false
-        if (!$check['status']) {
-          break;
-        } // end empty check
-      } // end foreach loop
-    } // end array check
-
-    // Check if the value is a string
-    if(is_string($data)) {
-      // If it is, perform a check on the string value
-      if (array_key_exists($data,$this->deep)) {
-        $check = array('status'=>true);
-      } else {
-        $check = array('status'=>false,'invalid_value'=>$data);
-      }
-    }
-
-    // Return the final check
-    return $check;
+    // Check if data is a valid option
+    return array_key_exists($data,$this->deep);
 
   } // end isEmpty check
 
@@ -55,12 +28,11 @@ class fieldOptionsList extends fieldBase {
     if ($validation === false) return $validation;
 
     // Check if option is in allowed list
-    $is_allowed_value = $this->is_allowed_value($this->value);
-    if (!$is_allowed_value['status']) {
+    if (!$this->recursive_array_validation('is_allowed_value',$this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_option_allowed_value',
-        'message' => $is_allowed_value['invalid_value'] .' is not in the list of availble options for '. $this->label,
+        'message' => $this->label .' contains an invalid option ',
       );
     }
 

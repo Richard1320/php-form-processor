@@ -28,13 +28,19 @@ class fieldInputText extends fieldBase {
 
     return $output;
   }
+  function validate_email_format($data) {
+    return filter_var($data, FILTER_VALIDATE_EMAIL);
+  }
+  function validate_string_length($data) {
+    return strlen($data) <= $this->maxlength;
+  }
   function validation() {
     // Run parent validation tests
     $validation = parent::validation();
     if ($validation === false) return $validation;
 
     // check if string is longer than allowed length
-    if ($this->maxlength && strlen($this->value) > $this->maxlength) {
+    if ($this->maxlength && !$this->recursive_array_validation('validate_string_length',$this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_string_maxlength',
@@ -42,7 +48,7 @@ class fieldInputText extends fieldBase {
       );
     }
 
-    if ($this->type == 'email' && !filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
+    if ($this->type == 'email' && !$this->recursive_array_validation('validate_email_format',$this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_email_format',

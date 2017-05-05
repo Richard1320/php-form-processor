@@ -52,16 +52,16 @@ class fieldBase {
     }
   }
 
-  function is_filled_in($data) {
+  function recursive_array_validation($function_name, $data) {
     // Default check to true to return false for errors
     $check = true;
 
     // Check if the parameter is an array
     if(is_array($data)) {
       // Loop through the initial dimension
-      foreach($data as $key => $value) {
+      foreach($data as $value) {
         // Let the function call itself over that particular node
-        $check = $this->is_filled_in($value);
+        $check = $this->recursive_array_validation($function_name, $value);
 
         // If any item in the loop returns false, break to return false
         if (!$check) {
@@ -73,12 +73,17 @@ class fieldBase {
     // Check if the parameter is a string
     if(is_string($data)) {
       // If it is, perform a check on the string value
-      return (empty($data)) ? false : true;
+      return $this->$function_name($data);
     }
 
     // Return the final check
     return $check;
 
+  }
+
+  function is_filled_in($data) {
+    // Return true if data is NOT empty
+    return (empty($data)) ? false : true;
   } // end is not empty check
 
   // checks if value is string or array
@@ -107,7 +112,7 @@ class fieldBase {
     $this->errors = array();
 
     // checks if value is empty
-    if (!$this->is_filled_in($this->value)) {
+    if (!$this->recursive_array_validation('is_filled_in',$this->value)) {
       // register error if field is required
       if ($this->required) {
         $this->errors[] = array(

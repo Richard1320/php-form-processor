@@ -17,6 +17,37 @@ class fieldInputFile extends fieldBase {
     $this->allowed_extensions = (isset($args['allowed_extensions'])) ? (array)$args['allowed_extensions'] : false;
 
   } // End construct
+
+  function recursive_array_validation_file($function_name, $data) {
+    // Default check to true to return false for errors
+    $check = true;
+
+    // Check if the parameter is an array
+    if(!isset($data['tmp_name'])) {
+      // Loop through the initial dimension
+      foreach($data as $value) {
+        // Let the function call itself over that particular node
+        $check = $this->recursive_array_validation_file($function_name, $value);
+
+        // If any item in the loop returns false, break to return false
+        if (!$check) {
+          break;
+        } // end empty check
+      } // end foreach loop
+    } // end array check
+
+    // Check if the parameter is a string
+    if(isset($data['tmp_name'])) {
+      // If it is, perform a check on the string value
+      return $this->$function_name($data);
+    }
+
+    // Return the final check
+    return $check;
+
+  }
+
+
   function field_html() {
     $output = '';
 
@@ -30,93 +61,25 @@ class fieldInputFile extends fieldBase {
     return $output;
   }
   function is_file_exists($data) {
-    // Default check to true to return false for errors
-    $check = true;
-
-    // Check if the parameter is an array
-    if(!isset($data['tmp_name'])) {
-      // Loop through the initial dimension
-      foreach($data as $value) {
-        // Let the function call itself over that particular node
-        $check = $this->is_file_exists($value);
-
-        // If any item in the loop returns false, break to return false
-        if (!$check) {
-          break;
-        } // end empty check
-      } // end foreach loop
-    } // end array check
-
-    // Check if the parameter is a string
-    if(isset($data['tmp_name'])) {
-      // If it is, perform a check on the string value
-      return file_exists($data['tmp_name']);
-    }
-
-    // Return the final check
-    return $check;
+    // Check if file exists
+    return file_exists($data['tmp_name']);
 
   } // end is file exists
 
   function is_allowed_extension($data) {
-    // Default check to true to return false for errors
-    $check = true;
 
-    // Check if the parameter is an array
-    if(!isset($data['tmp_name'])) {
-      // Loop through the initial dimension
-      foreach($data as $value) {
-        // Let the function call itself over that particular node
-        $check = $this->is_allowed_extension($value);
+    // Check if extension is allowed
+    $temp_file = $data['tmp_name'];
+    $extension = pathinfo($temp_file, PATHINFO_EXTENSION);
 
-        // If any item in the loop returns false, break to return false
-        if (!$check) {
-          break;
-        } // end empty check
-      } // end foreach loop
-    } // end array check
-
-    // Check if the parameter is a string
-    if(isset($data['tmp_name'])) {
-      $temp_file = $data['tmp_name'];
-      $extension = pathinfo($temp_file, PATHINFO_EXTENSION);
-
-      // If it is, perform a check on the string value
-      return in_array($extension,$this->allowed_extensions);
-    }
-
-    // Return the final check
-    return $check;
+    return in_array($extension,$this->allowed_extensions);
 
   } // end is in allowed files
 
   function is_under_maxsize($data) {
-    // Default check to true to return false for errors
-    $check = true;
-
-    // Check if the parameter is an array
-    if(!isset($data['tmp_name'])) {
-      // Loop through the initial dimension
-      foreach($data as $value) {
-        // Let the function call itself over that particular node
-        $check = $this->is_under_maxsize($value);
-
-        // If any item in the loop returns false, break to return false
-        if (!$check) {
-          break;
-        } // end empty check
-      } // end foreach loop
-    } // end array check
-
-    // Check if the parameter is a string
-    if(isset($data['tmp_name'])) {
-      $size = $data['size'];
-      // If it is, perform a check on the string value
-      return ($size <= $this->maxsize);
-    }
-
-    // Return the final check
-    return $check;
+    // Check if size is smaller than max size
+    $size = $data['size'];
+    return ($size <= $this->maxsize);
 
   } // end is under maxsize
 
@@ -126,7 +89,7 @@ class fieldInputFile extends fieldBase {
     if ($validation === false) return $validation;
 
     // empty file
-    if (!$this->is_file_exists($this->value)) {
+    if (!$this->recursive_array_validation_file('is_file_exists',$this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_file_exists',
@@ -138,7 +101,7 @@ class fieldInputFile extends fieldBase {
     }
 
     // Check if file extension is valid
-    if($this->allowed_extensions && !$this->is_allowed_extension($this->value) ) {
+    if($this->allowed_extensions && !$this->recursive_array_validation_file('is_allowed_extension',$this->value) ) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_allowed_extensions',
@@ -147,7 +110,7 @@ class fieldInputFile extends fieldBase {
     }
 
     // Check if a max size is set
-    if (!$this->is_under_maxsize($this->value)) {
+    if (!$this->recursive_array_validation_file('is_under_maxsize',$this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_file_maxsize',

@@ -19,7 +19,8 @@ class fieldInputFileImage extends fieldInputFile {
   } // End construct
 
   // check if file is actually an image file
-  function image_check($path) {
+  function is_valid_image($data) {
+    $path = $data['tmp_name'];
 		/*
 		$a = getimagesize($path);
 		$image_type = $a[2];
@@ -45,10 +46,8 @@ class fieldInputFileImage extends fieldInputFile {
     $validation = parent::validation();
     if ($validation === false) return $validation;
 
-    $temp_file = $this->value['tmp_name'];
-
     // check if string is longer than allowed length
-    if (!$this->image_check($temp_file)) {
+    if (!$this->recursive_array_validation_file('is_valid_image',$this->value) ) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_image_check',
