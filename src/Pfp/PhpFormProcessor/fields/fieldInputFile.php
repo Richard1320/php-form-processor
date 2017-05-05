@@ -29,19 +29,104 @@ class fieldInputFile extends fieldBase {
 
     return $output;
   }
+  function is_file_exists($data) {
+    // Default check to true to return false for errors
+    $check = true;
+
+    // Check if the parameter is an array
+    if(!isset($data['tmp_name'])) {
+      // Loop through the initial dimension
+      foreach($data as $value) {
+        // Let the function call itself over that particular node
+        $check = $this->is_file_exists($value);
+
+        // If any item in the loop returns false, break to return false
+        if (!$check) {
+          break;
+        } // end empty check
+      } // end foreach loop
+    } // end array check
+
+    // Check if the parameter is a string
+    if(isset($data['tmp_name'])) {
+      // If it is, perform a check on the string value
+      return file_exists($data['tmp_name']);
+    }
+
+    // Return the final check
+    return $check;
+
+  } // end is file exists
+
+  function is_allowed_extension($data) {
+    // Default check to true to return false for errors
+    $check = true;
+
+    // Check if the parameter is an array
+    if(!isset($data['tmp_name'])) {
+      // Loop through the initial dimension
+      foreach($data as $value) {
+        // Let the function call itself over that particular node
+        $check = $this->is_allowed_extension($value);
+
+        // If any item in the loop returns false, break to return false
+        if (!$check) {
+          break;
+        } // end empty check
+      } // end foreach loop
+    } // end array check
+
+    // Check if the parameter is a string
+    if(isset($data['tmp_name'])) {
+      $temp_file = $data['tmp_name'];
+      $extension = pathinfo($temp_file, PATHINFO_EXTENSION);
+
+      // If it is, perform a check on the string value
+      return in_array($extension,$this->allowed_extensions);
+    }
+
+    // Return the final check
+    return $check;
+
+  } // end is in allowed files
+
+  function is_under_maxsize($data) {
+    // Default check to true to return false for errors
+    $check = true;
+
+    // Check if the parameter is an array
+    if(!isset($data['tmp_name'])) {
+      // Loop through the initial dimension
+      foreach($data as $value) {
+        // Let the function call itself over that particular node
+        $check = $this->is_under_maxsize($value);
+
+        // If any item in the loop returns false, break to return false
+        if (!$check) {
+          break;
+        } // end empty check
+      } // end foreach loop
+    } // end array check
+
+    // Check if the parameter is a string
+    if(isset($data['tmp_name'])) {
+      $size = $data['size'];
+      // If it is, perform a check on the string value
+      return ($size <= $this->maxsize);
+    }
+
+    // Return the final check
+    return $check;
+
+  } // end is under maxsize
 
   function validation() {
     // Run parent validation tests
     $validation = parent::validation();
     if ($validation === false) return $validation;
 
-    $temp_file = $this->value['tmp_name'];
-    $size      = $this->value['size'];
-    $filename  = $this->value['name'];
-    $extension = pathinfo($temp_file, PATHINFO_EXTENSION);
-
     // empty file
-    if (!file_exists($temp_file)) {
+    if (!$this->is_file_exists($this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_file_exists',
@@ -53,7 +138,7 @@ class fieldInputFile extends fieldBase {
     }
 
     // Check if file extension is valid
-    if($this->allowed_extensions && !in_array($extension,$this->allowed_extensions) ) {
+    if($this->allowed_extensions && !$this->is_allowed_extension($this->value) ) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_allowed_extensions',
@@ -62,7 +147,7 @@ class fieldInputFile extends fieldBase {
     }
 
     // Check if a max size is set
-    if ($size > $this->maxsize) {
+    if (!$this->is_under_maxsize($this->value)) {
       $this->errors[] = array(
         'key'     => $this->key,
         'status'  => 'error_file_maxsize',
