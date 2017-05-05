@@ -19,7 +19,7 @@ The more in-depth features are explained with pages on the [wiki]
 PHP Form Processor is installed via Composer.
 
 ```
-composer require pfp/php_form_processor
+composer require pfp/php-form-processor
 ```
 
 ### <a name="initialize"></a>Initialization
