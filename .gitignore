@@ -1,4 +1,5 @@
 # Ignore Rules
 
+composer.lock
 vendor/*
 node_modules/*
