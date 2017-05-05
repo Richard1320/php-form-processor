@@ -22,7 +22,7 @@ class fieldOptionsList extends fieldBase {
     // Check if the parameter is an array
     if(is_array($data)) {
       // Loop through the initial dimension
-      foreach($data as $key => $value) {
+      foreach($data as $value) {
         // Let the function call itself over that particular node
         $check = $this->is_allowed_value($value);
 
@@ -36,7 +36,7 @@ class fieldOptionsList extends fieldBase {
     // Check if the value is a string
     if(is_string($data)) {
       // If it is, perform a check on the string value
-      if (array_key_exists($this->value,$this->deep)) {
+      if (array_key_exists($data,$this->deep)) {
         $check = array('status'=>true);
       } else {
         $check = array('status'=>false,'invalid_value'=>$data);
