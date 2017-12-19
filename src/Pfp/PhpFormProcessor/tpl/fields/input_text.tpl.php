@@ -23,7 +23,7 @@ $default_value = (array)$this->default_value;
     type="<?php echo $this->type; ?>"
     name="<?php echo $name; ?>"
     id="<?php echo $this->key; if ($i != 0) echo '_'. $i; ?>"
-    class="form-<?php echo $this->type; ?> <?php echo implode(' ', $this->f_classes); ?>"
+    class="<?php echo implode(' ', $this->f_classes); ?>"
     value="<?php echo htmlspecialchars($value); ?>"
     <?php $this->render_attributes(); ?>
     />

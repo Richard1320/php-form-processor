@@ -22,7 +22,7 @@ $default_value = (array)$this->default_value;
     type="file"
     name="<?php echo $name; ?>"
     id="<?php echo $this->key; if ($i != 0) echo '_'. $i; ?>"
-    class="form-<?php echo $this->type; ?> <?php echo implode(' ', $this->f_classes); ?>"
+    class="<?php echo implode(' ', $this->f_classes); ?>"
     <?php $this->render_attributes(); ?>
     />
     <?php

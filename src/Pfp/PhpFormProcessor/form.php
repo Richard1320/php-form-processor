@@ -59,12 +59,13 @@ class form {
     return $this->fields;
   } // end create field objects
   function render_form($action=NULL, $params=array()) {
+    require_once dirname(__FILE__).'/helpers/sanitize_alphanumeric.helper.php';
 
     $method        = (isset($params['method'])) ? $params['method'] : 'post';
     $submit_name   = (isset($params['submit_name'])) ? $params['submit_name'] : 'submit';
     $submit_value  = (isset($params['submit_value'])) ? $params['submit_value'] : 'Submit';
     $action_html   = (isset($params['action_html'])) ? (array)$params['action_html'] : array();
-    $classes       = (isset($params['classes'])) ? (array)$params['classes'] : array();
+    $classes       = (isset($params['classes'])) ? sanitize_alphanumeric_array($params['classes']) : array();
     $enctype       = (isset($params['enctype'])) ? $params['enctype'] : false;
 
     // check if self submit

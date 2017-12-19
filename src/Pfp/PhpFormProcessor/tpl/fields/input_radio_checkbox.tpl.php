@@ -24,7 +24,7 @@ $default_value = (is_array($this->default_value)) ? $this->default_value : array
         name="<?php echo $this->name; ?>"
         id="<?php echo $this->key; ?>_<?php echo $deep_key; ?>"
         value="<?php echo $deep_key; ?>"
-        class="form-<?php echo $this->type; ?> <?php echo implode(' ', $this->f_classes); ?>"
+        class="<?php echo implode(' ', $this->f_classes); ?>"
         <?php echo $selected; ?>
         <?php $this->render_attributes(); ?>
       />

@@ -19,19 +19,32 @@ class fieldBase {
 
 
   function __construct($key,$args) {
+    require_once dirname(__FILE__).'/../helpers/sanitize_alphanumeric.helper.php';
+
     $this->key           = $key;
     $this->value         = '';
     $this->errors        = array();
     $this->name          = (isset($args['name'])) ? $args['name'] : '';
     $this->required      = (isset($args['required'])) ? $args['required'] : false;
     $this->label         = (isset($args['label'])) ? $args['label'] : '';
-    $this->classes       = (isset($args['classes'])) ? $args['classes'] : array();
-    $this->f_classes     = (isset($args['f_classes'])) ? $args['f_classes'] : array();
     $this->attributes    = (isset($args['attributes'])) ? $args['attributes'] : array();
     $this->default_value = (isset($args['default_value'])) ? $args['default_value'] : '';
     $this->description   = (isset($args['description'])) ? $args['description'] : '';
     $this->multiple      = (isset($args['multiple'])) ? $args['multiple'] : false;
     $this->type          = (isset($args['type'])) ? (string)$args['type'] : 'text'; // type of input field
+
+    // Set form item classes
+    $field_wrapper_custom_classes   = (isset($args['classes'])) ? (array)$args['classes'] : array();
+    $field_wrapper_addition_classes = array('form-item', 'form-type-'. $this->type, 'form-name-'. $this->name );
+    $field_wrapper_full_classes     = array_merge($field_wrapper_addition_classes, $field_wrapper_custom_classes);
+    $this->classes                  = sanitize_alphanumeric_array($field_wrapper_full_classes);
+
+    // Set form input classes
+    $field_input_custom_classes     = (isset($args['f_classes'])) ? (array)$args['f_classes'] : array();
+    $field_input_addition_classes   = array('form-'. $this->type );
+    $field_input_full_classes       = array_merge($field_input_addition_classes, $field_input_custom_classes);
+    $this->f_classes                = sanitize_alphanumeric_array($field_input_full_classes);
+
 
   } // End construct
 
