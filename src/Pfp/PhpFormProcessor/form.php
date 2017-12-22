@@ -101,10 +101,38 @@ class form {
     include dirname(__FILE__).'/tpl/form/_wrapper-close.tpl.php';
   } // end render form
 
-  function get_field_value($key) {
+  function cross_reference_multidimensional_field_name_value($data, $array_names) {
+    $first_value = (isset($array_names[0])) ? array_shift( $array_names ) : '';
+    if (isset($data[$first_value])) {
+      return $this->cross_reference_multidimensional_field_name_value($data[$first_value],$array_names);
+    } else {
+      return $data;
+    }
+  }
+  function get_field_value($key,$data=array()) {
     $value = '';
+    if (!empty($data)) {
+      $field_name = $this->fields->$key->name;
+      $value      = (isset($data[$field_name])) ? $data[$field_name] : '';
 
-    if (isset($this->fields->$key->value) && !empty($this->fields->$key->value)) {
+      // Check if name has square brackets and thus, is an array
+      $pos = strpos($field_name, '[');
+
+      if ($pos !== false) {
+        // Grab all names inside square brackets
+        preg_match_all("/\[([^\]]*)\]/", $field_name, $matches);
+        $sub_array = $matches[1];
+
+        // First level item in data array
+        $root_name = substr($field_name, 0, $pos);
+
+        // Recursive loop to retrieve submitted value
+        $value = $this->cross_reference_multidimensional_field_name_value($data[$root_name],$sub_array);
+
+      }
+
+    } else if (isset($this->fields->$key->value) && !empty($this->fields->$key->value)) {
+      // Check if value is already set
       $value = $this->fields->$key->value;
     } else {
       // Retrieve form errors from session
@@ -158,7 +186,7 @@ class form {
           $field_data = (isset($_FILES[$field->name])) ? $_FILES[$field->name] : '';
         }
       } else {
-        $field_data = (isset($data[$field->name])) ? $data[$field->name] : '';
+        $field_data = $this->get_field_value($key,$data);
       }
 
       // Save submitted field data

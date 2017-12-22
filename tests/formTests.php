@@ -47,6 +47,49 @@ class formTests extends TestCase
     $this->assertEquals($form->errors[0]['status'], 'error_string_maxlength');
 
   } // end test input text
+  public function test_field_input_array_name()
+  {
+    // Setup params
+    $params = array(
+      'fields' => array(
+        'key_title' => array(
+          'label'     => 'Title',
+          'type'      => 'text',
+          'required'  => true,
+          'name'      => 'title[foo][bar][hello][world]',
+          'maxlength' => 40,
+        )
+      )
+    );
+
+    // Initialize form
+    $form = new Pfp\PhpFormProcessor\form($params);
+    $this->assertEquals(0, count($form->errors));
+
+    // Test empty
+    $data = array();
+    $form->submit_form_data($data);
+    $this->assertEquals(count($form->errors), 1);
+    $this->assertEquals($form->errors[0]['status'], 'error_is_filled_in');
+
+    // Test value
+    $data = array(
+      'title' => array(
+        'foo' => array(
+          'bar' => array(
+            'hello' => array(
+              'world' => 'I see dead people.'
+            )
+          )
+        )
+      )
+    );
+    $form->submit_form_data($data);
+    $this->assertEquals(0, count($form->errors));
+    $this->assertEquals($form->get_field_value('key_title'), 'I see dead people.');
+
+
+  } // end test input array name
   public function test_field_input_email()
   {
     // Setup params
